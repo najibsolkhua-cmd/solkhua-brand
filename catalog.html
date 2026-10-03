@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Каталог — SOLKHUA</title>
+<meta name="description" content="Все свечи SOLKHUA: шесть ароматов из 100% кокосового воска в алюминиевой банке 60 мл.">
+<meta name="theme-color" content="#F7F6F3">
+<meta property="og:title" content="Каталог — SOLKHUA">
+<meta property="og:description" content="Все свечи SOLKHUA: шесть ароматов из 100% кокосового воска в алюминиевой банке 60 мл.">
+<meta property="og:image" content="assets/img/product-palo-santo.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Didact+Gothic&family=Tinos:ital@0;1&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body data-page="catalog">
+<main id="main">
+  <header class="page-head wrap">
+    <nav class="crumbs" aria-label="Навигация"><a href="index.html">Главная</a><span>/</span><span>Каталог</span></nav>
+    <h1 data-split>Каталог</h1>
+    <p class="lead reveal">Шесть ароматов, шесть котов. Все свечи из 100% кокосового воска, 60 мл.</p>
+  </header>
+  <section class="wrap" style="padding-top:0">
+    <div class="toolbar">
+      <div class="chips" role="group" aria-label="Настроение аромата">
+        <button class="chip" type="button" data-mood="all" aria-pressed="true">Все</button>
+        <button class="chip" type="button" data-mood="warm" aria-pressed="false">Тёплые</button>
+        <button class="chip" type="button" data-mood="fresh" aria-pressed="false">Свежие</button>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center">
+        <span class="muted" id="count" style="font-size:var(--s--1)"></span>
+        <label class="sr" for="sort">Сортировка</label>
+        <select class="select" id="sort">
+          <option value="default">По популярности</option>
+          <option value="name">По названию</option>
+          <option value="price">По цене</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
