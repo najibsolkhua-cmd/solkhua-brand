@@ -23,7 +23,17 @@ window.SOLKHUA_CONFIG = {
     { id: "post", name: "Почта России", price: 300, eta: "5–12 дней" },
     { id: "pickup", name: "Самовывоз в Петербурге", price: 0, eta: "по договорённости" }
   ],
-  freeShippingFrom: 4000
+  freeShippingFrom: 4000,
+  // Видео распаковки для блока на главной. Положите файл в assets/video и впишите путь,
+  // например "assets/video/unboxing.mp4". Пусто — показываются фотографии.
+  unboxingVideo: "",
+  // Шрифты. Положите файлы в папку fonts и впишите пути, например "fonts/Molodnyak-Regular.woff2".
+  // Пусто — используются запасные шрифты.
+  fonts: {
+    display: "",   // Molodnyak Regular (заголовки)
+    body: "",      // Evolventa Regular (текст)
+    bodyBold: ""   // Evolventa Bold
+  }
 };
 
 window.SOLKHUA_PRODUCTS = [

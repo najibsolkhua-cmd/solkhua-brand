@@ -226,15 +226,17 @@
   }
 
   /* ---------- shared product card ---------- */
+  const cut = id => `assets/img/cut-${id}.webp`;
   function card(p, i = 0) {
     return `
-      <article class="card reveal d${i % 3 + 1}">
-        <a class="card-media" href="product.html?id=${p.id}" data-vt aria-label="${esc(p.name)}">
-          ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ""}
-          <img class="main" src="${img(p.id)}" alt="Свеча ${esc(p.name)} в вакуумной упаковке" loading="lazy" width="1400" height="1400">
-          <img class="alt" src="${img(p.id, "label")}" alt="" loading="lazy" width="640" height="640">
-        </a>
-        <button class="card-quick" type="button" data-add="${p.id}">В корзину · ${money(p.price)}</button>
+      <article class="card reveal d${i % 3 + 1}" style="--tone:${p.tone}">
+        <div class="card-visual">
+          <a class="card-media" href="product.html?id=${p.id}" data-vt aria-label="${esc(p.name)}">
+            ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ""}
+            <img class="main" src="${cut(p.id)}" alt="Свеча ${esc(p.name)} в вакуумной упаковке" loading="lazy" width="804" height="838">
+          </a>
+          <button class="card-quick" type="button" data-add="${p.id}">В корзину · ${money(p.price)}</button>
+        </div>
         <div class="card-row"><a class="card-title" href="product.html?id=${p.id}">${esc(p.name)}</a><span class="price">${money(p.price)}</span></div>
         <p class="card-meta">${esc(p.mood)} · ${p.notes.join(", ")}</p>
       </article>`;
@@ -249,12 +251,16 @@
   /* ---------- pages ---------- */
   const pages = {
     home() {
+      hero();
       $("#grid").innerHTML = PRODUCTS.map(card).join("");
       $("#cats").innerHTML = PRODUCTS.map((p, i) => `
         <a class="cat reveal d${i % 3 + 1}" href="product.html?id=${p.id}">
-          <div class="cat-img"><img src="${img(p.id, "label")}" alt="Этикетка «${esc(p.name)}»" loading="lazy"></div>
+          <div class="cat-wrap"><div class="cat-img" data-spin="${i % 2 ? -1 : 1}"><img src="${img(p.id, "label")}" alt="Этикетка «${esc(p.name)}»" loading="lazy"></div></div>
           <b>${esc(p.name)}</b><span>${esc(p.author)}</span>
         </a>`).join("");
+      spin();
+      quotes();
+      counter();
       story();
     },
     catalog() {
@@ -277,13 +283,13 @@
       const id = new URLSearchParams(location.search).get("id");
       const p = byId[id] || PRODUCTS[0];
       document.title = `${p.name} — SOLKHUA`;
-      const shots = [img(p.id), img(p.id, "label"), "assets/img/tin-open.jpg", "assets/img/tin-side.jpg"];
-      if (p.id === "lemongrass") shots.splice(2, 0, "assets/img/real-in-bag.jpg", "assets/img/tin-closed.jpg");
+      const shots = [cut(p.id), img(p.id), img(p.id, "label"), "assets/img/tin-open.jpg", "assets/img/tin-side.jpg"];
+      if (p.id === "lemongrass") shots.splice(3, 0, "assets/img/real-in-bag.jpg", "assets/img/tin-closed.jpg");
       let qty = 1;
       $("#pdp").innerHTML = `
         <div class="gallery">
           <div class="thumbs" role="tablist" aria-label="Фото товара">${shots.map((s, i) => `<button class="thumb" type="button" data-i="${i}" aria-current="${i === 0}" aria-label="Фото ${i + 1}"><img src="${s}" alt="" loading="lazy"></button>`).join("")}</div>
-          <div class="main-img" id="main-img"><img src="${shots[0]}" alt="Свеча ${esc(p.name)}" style="view-transition-name:product-hero" width="1400" height="1400"></div>
+          <div class="main-img" id="main-img" style="--tone:${p.tone}"><img src="${shots[0]}" alt="Свеча ${esc(p.name)}" style="view-transition-name:product-hero" width="1400" height="1400"></div>
         </div>
         <div class="pdp-info">
           <nav class="crumbs" aria-label="Навигация"><a href="index.html">Главная</a><span>/</span><a href="catalog.html">Каталог</a><span>/</span><span>${esc(p.name)}</span></nav>
@@ -339,6 +345,94 @@
     about() {}
   };
 
+  /* ---------- home: hero scent switcher ---------- */
+  function hero() {
+    const root = $("#hero"); if (!root) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const DUR = 6000;
+    const candle = $("#hero-candle"), panel = $("#hero-panel"), picker = $("#picker");
+    PRODUCTS.forEach(p => { const i = new Image(); i.src = cut(p.id); });
+    picker.innerHTML = PRODUCTS.map((p, i) => `
+      <button class="pick" type="button" data-i="${i}" aria-pressed="${i === 0}" aria-label="${esc(p.name)}" style="--dur:${DUR}ms">
+        <img src="${img(p.id, "label")}" alt=""><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="29"/></svg>
+      </button>`).join("");
+    let cur = 0, timer, auto = !reduce;
+    const fill = p => {
+      panel.innerHTML = `
+        <span class="eyebrow">${esc(p.mood)}</span>
+        <div class="hero-name">${esc(p.name)}</div>
+        <ul class="hero-notes">${p.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>
+        <q class="hero-quote">${esc(p.quote)}</q><span class="hero-cite">${esc(p.author)} · на крышке</span>
+        <div class="hero-buy"><span class="price">${money(p.price)}</span><button class="btn" type="button" data-add="${p.id}">В корзину</button></div>
+        <a class="link" href="product.html?id=${p.id}" style="align-self:flex-start">Подробнее о свече</a>`;
+    };
+    const show = (i, user) => {
+      if (user) { auto = false; clearTimeout(timer); }
+      const p = PRODUCTS[i]; cur = i;
+      root.style.setProperty("--tone", p.tone);
+      $$(".pick", picker).forEach((b, k) => { b.setAttribute("aria-pressed", k === i); b.classList.remove("run"); });
+      const active = $$(".pick", picker)[i];
+      if (auto) { void active.offsetWidth; active.classList.add("run"); }
+      candle.classList.add("out"); panel.classList.add("fade");
+      setTimeout(() => {
+        candle.src = cut(p.id); candle.alt = `Свеча ${p.name}`;
+        candle.classList.remove("out"); candle.classList.add("in-start");
+        fill(p);
+        requestAnimationFrame(() => requestAnimationFrame(() => { candle.classList.remove("in-start"); panel.classList.remove("fade"); }));
+      }, reduce ? 0 : 450);
+      if (auto) timer = setTimeout(() => show((cur + 1) % PRODUCTS.length), DUR);
+    };
+    picker.addEventListener("click", e => { const b = e.target.closest(".pick"); if (b) show(+b.dataset.i, true); });
+    root.addEventListener("pointerenter", () => { if (auto) { clearTimeout(timer); $$(".pick.run", picker).forEach(b => b.classList.remove("run")); } });
+    root.addEventListener("pointerleave", () => { if (auto) { clearTimeout(timer); timer = setTimeout(() => show((cur + 1) % PRODUCTS.length), 2500); } });
+    // gentle 3D tilt toward the pointer
+    const tilt = $("#hero-tilt");
+    if (!reduce && matchMedia("(hover:hover)").matches) {
+      root.addEventListener("pointermove", e => {
+        const r = root.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        tilt.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg) translate3d(${x * 16}px,${y * 10}px,0)`;
+      });
+      root.addEventListener("pointerleave", () => (tilt.style.transform = ""));
+    }
+    fill(PRODUCTS[0]); root.style.setProperty("--tone", PRODUCTS[0].tone);
+    if (auto) { $$(".pick", picker)[0].classList.add("run"); timer = setTimeout(() => show(1), DUR); }
+  }
+
+  /* ---------- home: labels spin like records while scrolling ---------- */
+  function spin() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = $$("[data-spin]");
+    const go = () => els.forEach(el => { const r = el.getBoundingClientRect(); el.style.transform = `rotate(${(r.top - innerHeight / 2) * 0.12 * el.dataset.spin}deg)`; });
+    addEventListener("scroll", () => requestAnimationFrame(go), { passive: true }); go();
+  }
+
+  /* ---------- home: rotating quotes from the lids ---------- */
+  function quotes() {
+    const box = $("#quotes"); if (!box) return;
+    box.innerHTML = PRODUCTS.map((p, i) => `<figure class="q${i === 0 ? " on" : ""}" style="margin:0"><blockquote>${esc(p.quote)}</blockquote><cite><img src="${img(p.id, "label")}" alt="">${esc(p.author)} · ${esc(p.name)}</cite></figure>`).join("");
+    const dots = $("#q-dots");
+    dots.innerHTML = PRODUCTS.map((p, i) => `<button type="button" aria-label="Цитата ${i + 1}" aria-pressed="${i === 0}"></button>`).join("");
+    let i = 0, t;
+    const go = n => { i = n; $$(".q", box).forEach((q, k) => q.classList.toggle("on", k === i)); $$("button", dots).forEach((d, k) => d.setAttribute("aria-pressed", k === i)); clearTimeout(t); t = setTimeout(() => go((i + 1) % PRODUCTS.length), 5500); };
+    dots.addEventListener("click", e => { const b = e.target.closest("button"); if (b) go([...dots.children].indexOf(b)); });
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) t = setTimeout(() => go(1), 5500);
+  }
+
+  /* ---------- home: 0 → 10% counter ---------- */
+  function counter() {
+    $$("[data-count]").forEach(el => {
+      const to = +el.dataset.count;
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return; io.disconnect();
+        const t0 = performance.now();
+        const step = t => { const k = Math.min((t - t0) / 1400, 1); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))) + "%"; if (k < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      }, { threshold: .5 });
+      io.observe(el);
+    });
+  }
+
   /* ---------- scroll story: frames now, scrubbed video when assets/video/unboxing.mp4 exists ---------- */
   function story() {
     const track = $("#story-track"); if (!track) return;
@@ -346,7 +440,8 @@
     const n = steps.length; let cur = -1, video = null;
     const v = document.createElement("video");
     Object.assign(v, { muted: true, playsInline: true, preload: "auto" });
-    v.src = "assets/video/unboxing.mp4";
+    if (!CFG.unboxingVideo) { addEventListener("scroll", () => requestAnimationFrame(tick), { passive: true }); addEventListener("resize", tick); tick(); return; }
+    v.src = CFG.unboxingVideo;
     v.addEventListener("loadedmetadata", () => { video = v; $("#stage").prepend(v); frames.forEach(f => (f.style.display = "none")); tick(); });
     function tick() {
       const r = track.getBoundingClientRect(), total = r.height - innerHeight;
@@ -473,7 +568,16 @@
     drawSum();
   }
 
+  /* ---------- fonts from data.js (only files that exist, so no 404s) ---------- */
+  function fonts() {
+    const f = CFG.fonts || {}, fmt = u => (/\.woff2$/i.test(u) ? "woff2" : /\.woff$/i.test(u) ? "woff" : /\.otf$/i.test(u) ? "opentype" : "truetype");
+    const face = (fam, w, u) => u ? `@font-face{font-family:"${fam}";font-weight:${w};font-display:swap;src:url("${u}") format("${fmt(u)}")}` : "";
+    const css = face("Molodnyak", 400, f.display) + face("Evolventa", 400, f.body) + face("Evolventa", 700, f.bodyBold);
+    if (css) { const st = document.createElement("style"); st.textContent = css; document.head.append(st); }
+  }
+
   /* ---------- boot ---------- */
+  fonts();
   layout();
   renderCart();
   events();

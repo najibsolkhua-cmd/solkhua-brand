@@ -1,14 +1,15 @@
 # Шрифты
 
-Положите сюда файлы шрифтов **с точно такими именами** (подойдёт любой из форматов, лучше .woff2):
+1. Положите сюда файлы шрифтов (лучше .woff2, подойдут .woff, .otf, .ttf).
+2. Откройте `assets/js/data.js` и впишите пути в блок `fonts`:
 
-| Шрифт | Где используется | Имя файла |
-|---|---|---|
-| Molodnyak Regular | заголовки | `Molodnyak-Regular.woff2` (или `.woff`, `.otf`, `.ttf`) |
-| Evolventa Regular | основной текст, кнопки | `Evolventa-Regular.woff2` (или `.woff`, `.otf`, `.ttf`) |
-| Evolventa Bold | жирный текст | `Evolventa-Bold.woff2` (или `.woff`, `.otf`, `.ttf`) |
+```js
+fonts: {
+  display: "fonts/Molodnyak-Regular.woff2",   // заголовки
+  body: "fonts/Evolventa-Regular.woff2",      // текст и кнопки
+  bodyBold: "fonts/Evolventa-Bold.woff2"      // жирный текст
+}
+```
 
-Times New Roman (цитаты, названия ароматов, цены) подключать не нужно: он есть на всех компьютерах и телефонах.
-На Android вместо него подставляется Tinos, он выглядит так же.
-
-Пока файлов нет, сайт показывает запасные шрифты: Poiret One вместо Molodnyak и Didact Gothic вместо Evolventa.
+Пока пути пустые, сайт показывает запасные шрифты (Poiret One и Didact Gothic) и не ищет несуществующие файлы.
+Times New Roman подключать не нужно: он есть на всех устройствах, на Android вместо него подставляется Tinos.

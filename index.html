@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F7F6F3">
 <meta property="og:title" content="SOLKHUA — свечи с характером петербургских котов">
 <meta property="og:description" content="Ароматические свечи из 100% кокосового воска. Шесть ароматов, шесть петербургских котов. 10% с каждой свечи — бездомным котам Петербурга.">
-<meta property="og:image" content="assets/img/product-palo-santo.jpg">
+<meta property="og:image" content="assets/img/cut-palo-santo.png">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,25 +18,27 @@
 </head>
 <body data-page="home">
 <main id="main">
-  <section class="hero">
-    <div class="hero-copy">
-      <span class="eyebrow reveal">Свечи из Петербурга</span>
-      <h1 data-split>Свечи с&nbsp;характером <span class="serif">петербургских</span> котов</h1>
-      <p class="lead reveal d1">Кокосовый воск, шесть ароматов и шесть котов со своим мнением. Тепло и уют для долгих питерских вечеров.</p>
-      <div class="hero-actions reveal d2">
-        <a class="btn" href="catalog.html">Выбрать аромат</a>
-        <a class="btn light" href="#story">Как она горит</a>
+  <section class="hero" id="hero" aria-label="Выберите аромат">
+    <div class="hero-word" aria-hidden="true">SOLKHUA</div>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <span class="eyebrow reveal">Свечи из Петербурга</span>
+        <h1 data-split>Свечи с&nbsp;характером <span class="serif">петербургских котов</span></h1>
+        <p class="lead reveal d1">Шесть ароматов и шесть котов со своим мнением. Выберите, кто будет греть ваш вечер.</p>
+        <div class="picker reveal d2" id="picker" role="group" aria-label="Ароматы"></div>
+        <div class="hero-actions reveal d3">
+          <a class="btn" href="catalog.html">Весь каталог</a>
+          <a class="btn light" href="#story">Как она горит</a>
+        </div>
       </div>
-      <div class="hero-facts reveal d3">
-        <div><b>100%</b><span>кокосовый воск</span></div>
-        <div><b>60 мл</b><span>в алюминиевой банке</span></div>
-        <div><b>10%</b><span>котам без дома</span></div>
+      <div class="hero-stage">
+        <div class="hero-float"><div class="hero-tilt" id="hero-tilt">
+          <img class="hero-candle" id="hero-candle" src="assets/img/cut-palo-santo.webp" alt="Свеча SOLKHUA «Пало санто» в прозрачной вакуумной упаковке" width="804" height="838" fetchpriority="high">
+        </div></div>
       </div>
+      <div class="hero-panel hero-swap" id="hero-panel" aria-live="polite"></div>
     </div>
-    <div class="hero-media">
-      <img src="assets/img/product-palo-santo.jpg" alt="Свеча SOLKHUA «Пало санто» в прозрачной вакуумной упаковке" width="1400" height="1400" fetchpriority="high">
-      <a class="hero-chip" href="product.html?id=palo-santo"><img src="assets/img/label-palo-santo.jpg" alt="">Пало санто · смотреть</a>
-    </div>
+    <div class="hero-hint" aria-hidden="true">Листайте<i></i></div>
   </section>
 
   <div class="marquee" aria-hidden="true">
@@ -58,7 +60,7 @@
     <div class="story-track" id="story-track">
       <div class="story-stick">
         <div class="stage" id="stage">
-          <div class="frame on"><img src="assets/img/product-palo-santo.jpg" alt="Свеча в вакуумной упаковке"></div>
+          <div class="frame on"><img class="cutout" src="assets/img/cut-palo-santo.webp" alt="Свеча в вакуумной упаковке"></div>
           <div class="frame"><img src="assets/img/tin-closed.jpg" alt="Банка без упаковки"></div>
           <div class="frame"><img src="assets/img/tin-open.jpg" alt="Открытая свеча"></div>
           <div class="frame"><img src="assets/img/tin-open.jpg" alt="Зажжённая свеча"><div class="warm"></div><div class="flame"><i></i></div></div>
@@ -95,7 +97,7 @@
     </div>
   </section>
 
-  <section class="wrap">
+  <section class="wrap cats-sec">
     <div class="head">
       <h2 data-split>Коты Петербурга</h2>
       <p class="reveal">В Эрмитаже коты служат с 1745 года. Наши коты продолжают традицию: в очках, жемчуге и с собственным мнением.</p>
@@ -105,7 +107,7 @@
 
   <section class="charity">
     <div class="wrap charity-in">
-      <div class="charity-num reveal" aria-hidden="true">10%</div>
+      <div class="charity-num reveal" aria-hidden="true" data-count="10">10%</div>
       <div class="reveal d1">
         <span class="eyebrow">Помощь котам</span>
         <h2>Каждая свеча греет ещё одного кота</h2>
@@ -142,9 +144,10 @@
     </div>
   </section>
 
-  <section class="big-quote wrap" style="padding-top:0">
-    <blockquote data-split>Женщина, которая любима, всегда добивается успеха</blockquote>
-    <cite class="reveal">Вики Баум · на крышке «Апельсин и корица»</cite>
+  <section class="wrap big-quote" style="padding-top:0" aria-label="Цитаты с крышек">
+    <span class="eyebrow reveal" style="display:block;text-align:center;margin-bottom:24px">На каждой крышке</span>
+    <div class="quotes" id="quotes"></div>
+    <div class="q-dots" id="q-dots" role="group" aria-label="Выбор цитаты"></div>
   </section>
 </main>
 <script src="assets/js/data.js"></script>
