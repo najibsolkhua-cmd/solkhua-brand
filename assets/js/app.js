@@ -9,7 +9,8 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp`;
+  const V = "20261004b"; // bump after replacing photos so browsers fetch the new files
+  const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /* ---------- storage (safe) ---------- */
@@ -74,7 +75,7 @@
             </ul></div>
           </div>
           <div class="wordmark" aria-hidden="true">SOLKHUA</div>
-          <div class="legal"><span>© ${new Date().getFullYear()} SOLKHUA · ${CFG.city}</span><span class="credit">Фото города и котов: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></span><a href="info.html">Доставка и оплата</a></div>
+          <div class="legal"><span>© ${new Date().getFullYear()} SOLKHUA · ${CFG.city}</span><a href="info.html">Доставка и оплата</a></div>
         </div>
       </footer>
       <div class="overlay" id="overlay"></div>
@@ -283,7 +284,7 @@
       const id = new URLSearchParams(location.search).get("id");
       const p = byId[id] || PRODUCTS[0];
       document.title = `${p.name} — SOLKHUA`;
-      const shots = [img(p.id), img(p.id, "closed"), img(p.id, "open"), "assets/img/side.webp", "assets/img/lit.webp", img(p.id, "label")];
+      const shots = [img(p.id), img(p.id, "closed"), img(p.id, "open"), `assets/img/side.webp?v=${V}`, `assets/img/lit.webp?v=${V}`, img(p.id, "label")];
       let qty = 1;
       $("#pdp").innerHTML = `
         <div class="gallery">
