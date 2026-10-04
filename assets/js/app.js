@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261004g"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261004h"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -583,23 +583,6 @@
     drawSum();
   }
 
-  /* ---------- fonts from data.js (only files that exist, so no 404s) ---------- */
-  function fonts() {
-    const f = CFG.fonts || {}, fmt = u => (/\.woff2$/i.test(u) ? "woff2" : /\.woff$/i.test(u) ? "woff" : /\.otf$/i.test(u) ? "opentype" : "truetype");
-    const face = (fam, w, u) => u ? `@font-face{font-family:"${fam}";font-weight:${w};font-display:swap;src:url("${u}") format("${fmt(u)}")}` : "";
-    const css = face("Molodnyak", 400, f.display) + face("Evolventa", 400, f.body) + face("Evolventa", 700, f.bodyBold);
-    if (css) { const st = document.createElement("style"); st.textContent = css; document.head.append(st); }
-  }
-
-  /* ---------- Molodnyak detection: installed locally or loaded from data.js ---------- */
-  function fontClass() {
-    const ctx = document.createElement("canvas").getContext("2d");
-    const t = "абвгдеж SOLKHUA 0123";
-    const w = f => { ctx.font = f; return ctx.measureText(t).width; };
-    const has = w('48px "Molodnyak", monospace') !== w("48px monospace");
-    document.documentElement.classList.toggle("f-mol", has);
-  }
-
   /* ---------- soft parallax for wide photos ---------- */
   function parallax() {
     const els = $$("[data-parallax]");
@@ -615,9 +598,6 @@
 
   /* ---------- boot ---------- */
   document.documentElement.dataset.hover = CFG.cardHover || "wipe";
-  fonts();
-  fontClass();
-  if (document.fonts) document.fonts.ready.then(fontClass);
   layout();
   renderCart();
   events();

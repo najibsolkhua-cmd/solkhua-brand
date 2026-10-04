@@ -4,7 +4,13 @@
    Файлы шрифтов кладутся в папку /fonts (см. fonts/README.md).
    ========================================================== */
 
-/* @font-face для Molodnyak и Evolventa добавляется из assets/js/data.js (SOLKHUA_CONFIG.fonts) */
+/* ---------- шрифты (файлы в папке /fonts) ---------- */
+@font-face{font-family:"Molodnyak";src:url("../../fonts/Molodnyak.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Oblique.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-BoldOblique.woff2") format("woff2");font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:"SK Times";src:url("../../fonts/TimesNewRoman.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 
 :root{
   /* Палитра: светлые спокойные тона, туман и белые ночи */
@@ -20,9 +26,11 @@
   --accent-soft:#E9DECD;
   --lavender:#E5DDD2;
 
-  --f-display:"Molodnyak","Poiret One","Century Gothic",sans-serif;
-  --f-body:"Evolventa","Didact Gothic","Century Gothic","Futura","Avenir",sans-serif;
-  --f-serif:"Times New Roman","Tinos",Times,serif;
+  /* Molodnyak содержит только строчные буквы (они нарисованы как жирные капители), поэтому
+     текст этим шрифтом всегда набирается строчными; недостающие знаки (%, «», —) берутся из Evolventa */
+  --f-display:"Molodnyak","Evolventa",sans-serif;
+  --f-body:"Evolventa",Arial,sans-serif;
+  --f-serif:"SK Times","Times New Roman",Times,serif;
 
   --s--1:clamp(.8rem,.77rem + .12vw,.88rem);
   --s-0:clamp(.98rem,.94rem + .18vw,1.08rem);
@@ -38,12 +46,9 @@
   color-scheme:light;
 }
 
-/* ---------- Molodnyak ----------
-   В шрифте Molodnyak заглавные буквы тонкие, а строчные — жирные капители.
-   Когда шрифт доступен, на <html> ставится класс f-mol, и заголовки набираются строчными,
-   чтобы все буквы были одинаково жирными. */
-.f-mol :is(h1,h2,h3,legend,.logo,.wordmark,.big-num,.charity-num,.hero-facts b,.specs b,.perks b,.menu a,.charity-note b){text-transform:lowercase}
-.f-mol .logo{letter-spacing:.04em}
+/* ---------- Molodnyak: всё, что набрано этим шрифтом, — строчными (в шрифте нет заглавных) ---------- */
+:is(h1,h2,h3,legend,.logo,.wordmark,.big-num,.charity-num,.hero-facts b,.specs b,.perks b,.menu a,.charity-note b){text-transform:lowercase}
+.logo{letter-spacing:.04em}
 
 /* ---------- base ---------- */
 *,*::before,*::after{box-sizing:border-box}
@@ -124,7 +129,7 @@ section{padding-block:clamp(64px,9vw,140px)}
 
 /* ---------- hero: scent switcher with floating candle ---------- */
 .hero{position:relative;padding:0;overflow:hidden;background:var(--milk)}
-.hero-word{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:"Poiret One",var(--f-display);font-size:min(25vw,24rem);line-height:.8;letter-spacing:.02em;color:rgba(255,255,255,.55);white-space:nowrap;pointer-events:none;user-select:none}
+.hero-word{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--f-display);font-size:min(25vw,24rem);line-height:.8;letter-spacing:.02em;color:rgba(255,255,255,.55);white-space:nowrap;pointer-events:none;user-select:none}
 .hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,.95fr);align-items:center;gap:clamp(16px,2vw,40px);min-height:min(calc(100svh - var(--header-h) - 34px),900px);padding-block:clamp(32px,4vw,64px)}
 .hero-copy{display:flex;flex-direction:column;gap:clamp(18px,2vw,28px);min-width:0}
 .hero h1{font-size:clamp(2.2rem,1.2rem + 2.6vw,4.4rem)}

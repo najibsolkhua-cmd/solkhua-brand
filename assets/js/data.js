@@ -28,14 +28,7 @@ window.SOLKHUA_CONFIG = {
   cardHover: "wipe",
   // Видео распаковки для блока на главной. Положите файл в assets/video и впишите путь,
   // например "assets/video/unboxing.mp4". Пусто — показываются фотографии.
-  unboxingVideo: "",
-  // Шрифты. Положите файлы в папку fonts и впишите пути, например "fonts/Molodnyak-Regular.woff2".
-  // Пусто — используются запасные шрифты.
-  fonts: {
-    display: "",   // Molodnyak Regular (заголовки)
-    body: "",      // Evolventa Regular (текст)
-    bodyBold: ""   // Evolventa Bold
-  }
+  unboxingVideo: ""
 };
 
 window.SOLKHUA_PRODUCTS = [
