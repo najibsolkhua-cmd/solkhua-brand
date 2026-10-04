@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261004b"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261004c"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -248,6 +248,16 @@
     if (a) { const im = a.querySelector(".main"); if (im) im.style.viewTransitionName = "product-hero"; }
   });
   addEventListener("pageshow", () => $$(".card-media .main").forEach(i => (i.style.viewTransitionName = "")));
+  // circle reveal on product cards starts (and ends) where the cursor enters (and leaves)
+  const setOrigin = e => {
+    const m = e.target.closest && e.target.closest(".card");
+    if (!m || e.pointerType === "touch") return;
+    const media = m.querySelector(".card-media"), r = media.getBoundingClientRect();
+    media.style.setProperty("--x", `${((e.clientX - r.left) / r.width * 100).toFixed(1)}%`);
+    media.style.setProperty("--y", `${((e.clientY - r.top) / r.height * 100).toFixed(1)}%`);
+  };
+  document.addEventListener("pointerover", e => { if (e.target.closest(".card") && !e.target.closest(".card").contains(e.relatedTarget)) setOrigin(e); });
+  document.addEventListener("pointerout", e => { if (e.target.closest(".card") && !e.target.closest(".card").contains(e.relatedTarget)) setOrigin(e); });
 
   /* ---------- pages ---------- */
   const pages = {

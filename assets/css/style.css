@@ -185,13 +185,14 @@ section{padding-block:clamp(64px,9vw,140px)}
 .card-visual{position:relative}
 .card-media{position:relative;display:block;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--photo)}
 .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-/* hover: the unpacked tin fades in softly over the packed one (no flash through the background) */
-.card-media img{transition:opacity .65s cubic-bezier(.4,0,.2,1),transform 1.4s cubic-bezier(.22,.7,.18,1);will-change:opacity,transform;backface-visibility:hidden}
-.card-media .alt{opacity:0;transform:scale(1.015)}
-.card:hover .card-media .main{transform:scale(1.03)}
-.card:hover .card-media .alt{opacity:1;transform:scale(1.03)}
+/* hover: the unpacked tin is revealed by a circle growing from the cursor; the packed tin eases back */
+.card-media .main{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.card-media .alt{clip-path:circle(0% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .6s cubic-bezier(.2,.8,.2,1),-webkit-clip-path .6s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);transform:scale(1.04);will-change:clip-path}
+.card:hover .card-media .main{transform:scale(.96)}
+.card:hover .card-media .alt{clip-path:circle(150% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(150% at var(--x,50%) var(--y,50%));transform:scale(1)}
+.card-media:focus-visible .alt{clip-path:circle(150% at 50% 50%);-webkit-clip-path:circle(150% at 50% 50%)}
 .card-badge{position:absolute;z-index:2;top:14px;left:14px;padding:.45em .95em;border-radius:999px;background:rgba(255,255,255,.85);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
-.card-quick{position:absolute;z-index:2;left:14px;right:14px;bottom:14px;display:flex;justify-content:center;padding:.95em;border:0;border-radius:999px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:var(--s--1);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;opacity:0;transform:translateY(12px);transition:transform .5s var(--ease),opacity .4s,background .3s}
+.card-quick{position:absolute;z-index:2;left:14px;right:14px;bottom:14px;display:flex;justify-content:center;padding:.95em;border:0;border-radius:999px;background:var(--white);box-shadow:0 10px 30px -18px rgba(60,45,30,.45);font-size:var(--s--1);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;opacity:0;transform:translateY(10px);transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s ease,background .3s}
 .card:hover .card-quick,.card-quick:focus-visible{opacity:1;transform:none}
 .card-quick:hover{background:var(--white)}
 .card-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
