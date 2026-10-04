@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const img = (id, kind = "product") => `assets/img/${kind}-${id}.jpg`;
+  const img = (id, kind = "product") => (kind === "product" ? `assets/img/product-${id}.webp` : `assets/img/${kind}-${id}.jpg`);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /* ---------- storage (safe) ---------- */
@@ -36,7 +36,7 @@
     const nav = navItems.map(([h, t, k]) => `<a href="${h}"${k === page ? ' aria-current="page"' : ""}>${t}</a>`).join("");
     document.body.insertAdjacentHTML("afterbegin", `
       <a class="sr" href="#main">Перейти к содержанию</a>
-      <div class="announce">${CFG.charityPercent}% с каждой свечи мы передаём <b>бездомным котам Петербурга</b></div>
+      <div class="announce">${CFG.charityPercent}% с каждой свечи мы передаём <b>бездомным котам и кошкам</b></div>
       <header class="header" id="header">
         <div class="wrap header-in">
           <button class="icon-btn burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="menu">${ico.menu}</button>
@@ -74,7 +74,7 @@
             </ul></div>
           </div>
           <div class="wordmark" aria-hidden="true">SOLKHUA</div>
-          <div class="legal"><span>© ${new Date().getFullYear()} SOLKHUA · ${CFG.city}</span><a href="info.html">Доставка и оплата</a></div>
+          <div class="legal"><span>© ${new Date().getFullYear()} SOLKHUA · ${CFG.city}</span><span class="credit">Фото города и котов: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></span><a href="info.html">Доставка и оплата</a></div>
         </div>
       </footer>
       <div class="overlay" id="overlay"></div>
@@ -128,7 +128,7 @@
     foot.innerHTML = `
       <div class="ship-bar">${left > 0 ? `До бесплатной доставки осталось ${money(left)}` : "Доставка для вас бесплатна"}<i style="--w:${pct}%"></i></div>
       <div class="total-row"><span>Итого</span><b>${money(subtotal())}</b></div>
-      <div class="charity-note"><b>${CFG.charityPercent}%</b><span>из этой суммы, ${money(Math.round(subtotal() * CFG.charityPercent / 100))}, получат бездомные коты</span></div>
+      <div class="charity-note"><b>${CFG.charityPercent}%</b><span>из этой суммы, ${money(Math.round(subtotal() * CFG.charityPercent / 100))}, получат бездомные коты и кошки</span></div>
       <a class="btn block" href="checkout.html">Оформить заказ</a>`;
   }
   function openDrawer() {
@@ -226,14 +226,13 @@
   }
 
   /* ---------- shared product card ---------- */
-  const cut = id => `assets/img/cut-${id}.webp`;
   function card(p, i = 0) {
     return `
-      <article class="card reveal d${i % 3 + 1}" style="--tone:${p.tone}">
+      <article class="card reveal d${i % 3 + 1}">
         <div class="card-visual">
           <a class="card-media" href="product.html?id=${p.id}" data-vt aria-label="${esc(p.name)}">
             ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ""}
-            <img class="main" src="${cut(p.id)}" alt="Свеча ${esc(p.name)} в вакуумной упаковке" loading="lazy" width="804" height="838">
+            <img class="main" src="${img(p.id)}" alt="Свеча ${esc(p.name)} в вакуумной упаковке" loading="lazy" width="1400" height="1400">
           </a>
           <button class="card-quick" type="button" data-add="${p.id}">В корзину · ${money(p.price)}</button>
         </div>
@@ -283,13 +282,13 @@
       const id = new URLSearchParams(location.search).get("id");
       const p = byId[id] || PRODUCTS[0];
       document.title = `${p.name} — SOLKHUA`;
-      const shots = [cut(p.id), img(p.id), img(p.id, "label"), "assets/img/tin-open.jpg", "assets/img/tin-side.jpg"];
-      if (p.id === "lemongrass") shots.splice(3, 0, "assets/img/real-in-bag.jpg", "assets/img/tin-closed.jpg");
+      const shots = [img(p.id), img(p.id, "label")];
+      if (p.id === "apelsin-koritsa") shots.push("assets/img/lit-apelsin.webp");
       let qty = 1;
       $("#pdp").innerHTML = `
         <div class="gallery">
           <div class="thumbs" role="tablist" aria-label="Фото товара">${shots.map((s, i) => `<button class="thumb" type="button" data-i="${i}" aria-current="${i === 0}" aria-label="Фото ${i + 1}"><img src="${s}" alt="" loading="lazy"></button>`).join("")}</div>
-          <div class="main-img" id="main-img" style="--tone:${p.tone}"><img src="${shots[0]}" alt="Свеча ${esc(p.name)}" style="view-transition-name:product-hero" width="1400" height="1400"></div>
+          <div class="main-img" id="main-img"><img src="${shots[0]}" alt="Свеча ${esc(p.name)}" style="view-transition-name:product-hero" width="1400" height="1400"></div>
         </div>
         <div class="pdp-info">
           <nav class="crumbs" aria-label="Навигация"><a href="index.html">Главная</a><span>/</span><a href="catalog.html">Каталог</a><span>/</span><span>${esc(p.name)}</span></nav>
@@ -301,7 +300,7 @@
             <div class="qty"><button type="button" id="q-dec" aria-label="Меньше">−</button><output id="q-val" aria-live="polite">1</output><button type="button" id="q-inc" aria-label="Больше">+</button></div>
             <button class="btn" type="button" id="buy">В корзину · ${money(p.price)}</button>
           </div>
-          <div class="charity-note"><b>${CFG.charityPercent}%</b><span>с этой свечи получат бездомные коты и кошки Петербурга</span></div>
+          <div class="charity-note"><b>${CFG.charityPercent}%</b><span>с этой свечи получат бездомные коты и кошки</span></div>
           <div class="label-quote">
             <img src="${img(p.id, "label")}" alt="" loading="lazy">
             <div><q>${esc(p.quote)}</q><small>${esc(p.author)} · на крышке</small></div>
@@ -351,7 +350,8 @@
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const DUR = 6000;
     const candle = $("#hero-candle"), panel = $("#hero-panel"), picker = $("#picker");
-    PRODUCTS.forEach(p => { const i = new Image(); i.src = cut(p.id); });
+    const preload = () => PRODUCTS.forEach(p => { const i = new Image(); i.src = img(p.id); });
+    "requestIdleCallback" in window ? requestIdleCallback(preload) : setTimeout(preload, 1500);
     picker.innerHTML = PRODUCTS.map((p, i) => `
       <button class="pick" type="button" data-i="${i}" aria-pressed="${i === 0}" aria-label="${esc(p.name)}" style="--dur:${DUR}ms">
         <img src="${img(p.id, "label")}" alt=""><svg viewBox="0 0 62 62"><circle cx="31" cy="31" r="29"/></svg>
@@ -369,13 +369,12 @@
     const show = (i, user) => {
       if (user) { auto = false; clearTimeout(timer); }
       const p = PRODUCTS[i]; cur = i;
-      root.style.setProperty("--tone", p.tone);
       $$(".pick", picker).forEach((b, k) => { b.setAttribute("aria-pressed", k === i); b.classList.remove("run"); });
       const active = $$(".pick", picker)[i];
       if (auto) { void active.offsetWidth; active.classList.add("run"); }
       candle.classList.add("out"); panel.classList.add("fade");
       setTimeout(() => {
-        candle.src = cut(p.id); candle.alt = `Свеча ${p.name}`;
+        candle.src = img(p.id); candle.alt = `Свеча ${p.name}`;
         candle.classList.remove("out"); candle.classList.add("in-start");
         fill(p);
         requestAnimationFrame(() => requestAnimationFrame(() => { candle.classList.remove("in-start"); panel.classList.remove("fade"); }));
@@ -395,7 +394,7 @@
       });
       root.addEventListener("pointerleave", () => (tilt.style.transform = ""));
     }
-    fill(PRODUCTS[0]); root.style.setProperty("--tone", PRODUCTS[0].tone);
+    fill(PRODUCTS[0]);
     if (auto) { $$(".pick", picker)[0].classList.add("run"); timer = setTimeout(() => show(1), DUR); }
   }
 
@@ -504,7 +503,7 @@
         <div class="sum-row"><span>Товары</span><span class="price">${money(subtotal())}</span></div>
         <div class="sum-row"><span>Доставка</span><span class="price">${shipCost() ? money(shipCost()) : "бесплатно"}</span></div>
         <div class="sum-row total"><span>Итого</span><b>${money(subtotal() + shipCost())}</b></div>
-        <div class="charity-note"><b>${CFG.charityPercent}%</b><span>${money(Math.round(subtotal() * CFG.charityPercent / 100))} получат бездомные коты Петербурга</span></div>`;
+        <div class="charity-note"><b>${CFG.charityPercent}%</b><span>${money(Math.round(subtotal() * CFG.charityPercent / 100))} получат бездомные коты и кошки</span></div>`;
     };
     form.addEventListener("change", e => {
       if (e.target.name === "ship") $("#addr-field").hidden = form.ship.value === "pickup";
@@ -558,7 +557,7 @@
           <h1>Спасибо, ${esc(order.name.split(" ")[0])}!</h1>
           <p class="lead" style="margin-inline:auto">${sent ? "Мы получили заказ и скоро свяжемся с вами, чтобы подтвердить доставку и прислать ссылку на оплату." : "Чтобы мы получили заказ, отправьте его нам в Telegram: скопируйте текст и вставьте в чат."}</p>
           ${sent ? "" : `<div class="hero-actions" style="justify-content:center"><button class="btn" type="button" id="copy-order">Скопировать заказ</button><a class="btn light" href="https://t.me/${CFG.telegram}" target="_blank" rel="noopener">Открыть Telegram</a></div>`}
-          <div class="charity-note" style="max-width:420px"><b>${CFG.charityPercent}%</b><span>этого заказа получат бездомные коты Петербурга. Спасибо, что помогаете.</span></div>
+          <div class="charity-note" style="max-width:420px"><b>${CFG.charityPercent}%</b><span>этого заказа получат бездомные коты и кошки. Спасибо, что помогаете.</span></div>
           <a class="link" href="catalog.html">Вернуться в каталог</a>
         </div>`;
       const cp = $("#copy-order");
@@ -576,12 +575,37 @@
     if (css) { const st = document.createElement("style"); st.textContent = css; document.head.append(st); }
   }
 
+  /* ---------- Molodnyak detection: installed locally or loaded from data.js ---------- */
+  function fontClass() {
+    const ctx = document.createElement("canvas").getContext("2d");
+    const t = "абвгдеж SOLKHUA 0123";
+    const w = f => { ctx.font = f; return ctx.measureText(t).width; };
+    const has = w('48px "Molodnyak", monospace') !== w("48px monospace");
+    document.documentElement.classList.toggle("f-mol", has);
+  }
+
+  /* ---------- soft parallax for wide photos ---------- */
+  function parallax() {
+    const els = $$("[data-parallax]");
+    if (!els.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const go = () => els.forEach(el => {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      const k = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      el.style.transform = `translate3d(0,${(-k * 8).toFixed(2)}%,0)`;
+    });
+    addEventListener("scroll", () => requestAnimationFrame(go), { passive: true }); go();
+  }
+
   /* ---------- boot ---------- */
   fonts();
+  fontClass();
+  if (document.fonts) document.fonts.ready.then(fontClass);
   layout();
   renderCart();
   events();
   transitions();
   (pages[page] || (() => {}))();
   animations();
+  parallax();
 })();

@@ -24,11 +24,24 @@
   Зарегистрируйтесь на [formspree.io](https://formspree.io), создайте форму и вставьте её адрес.
   Заказы будут приходить на вашу почту. Пока поле пустое, покупатель после оформления копирует заказ и отправляет вам в Telegram.
 - **Шрифты:** файлы в папку `fonts/` и пути в `fonts` в `data.js` (см. `fonts/README.md`).
+  В Molodnyak заглавные буквы тонкие, а строчные — жирные, поэтому заголовки и логотип автоматически набираются строчными, когда шрифт доступен.
 - **Видео распаковки:** файл в `assets/video/` и путь в `unboxingVideo` в `data.js`.
 - **Фото товаров:**
-  - `assets/img/cut-<id>.webp` / `.png` — свеча без фона (главная, каталог, карточка товара);
-  - `assets/img/product-<id>.jpg` — свеча на фоне (галерея, корзина);
-  - `assets/img/label-<id>.jpg` — этикетка.
+  - `assets/img/product-<id>.webp` — свеча на фоне #EFE9E2 (главная, каталог, карточка товара, корзина).
+    Фон сайта (`--milk` в `style.css`) совпадает с фоном этих фото, поэтому свечи выглядят как без фона.
+    Новые фото выравнивайте под #EFE9E2 или присылайте мне.
+  - `assets/img/label-<id>.jpg` — этикетка; `assets/img/lit-apelsin.webp` — горящая свеча.
+- **Фото Петербурга и котов** — Unsplash (бесплатная лицензия Unsplash, указание авторов желательно):
+  - `assets/img/spb/bridge.webp` — Ilia Bronskiy, https://unsplash.com (photo-1642021824052-920192524b19)
+  - `assets/img/spb/isaac-flowers.webp` — Ilia Bronskiy, https://unsplash.com (photo-1642258483742-a4495842847b)
+  - `assets/img/spb/rooftops.webp` — iam_os, https://unsplash.com (photo-1579677359441-a59fa83ecc40)
+  - `assets/img/spb/courtyard.webp` — Karina Kegy, https://unsplash.com (photo-1609367947233-6e9bcbaadcb3)
+  - `assets/img/spb/canal.webp` — Nick Night, https://unsplash.com (photo-1635237929027-819d8cce4c26)
+  - `assets/img/spb/isaac-canal.webp` — Ainur Khakimov, https://unsplash.com (photo-1655121109751-20a78309dc2e)
+  - `assets/img/cats/care.webp` — Nicholas Ng, https://unsplash.com (photo-1658433544476-832b7bbfc17a)
+  - `assets/img/cats/hope.webp` — Hkyu Wu, https://unsplash.com (photo-1560145393-2f79d01cabc5)
+  - `assets/img/cats/kittens.webp` — little plant, https://unsplash.com (photo-1622273413883-265d478feda3)
+  - `assets/img/cats/ginger.webp` — Daniel Mačura, https://unsplash.com (photo-1604675223954-b1aabd668078)
 - **Цвета и размеры:** переменные в начале `assets/css/style.css`.
 
 ## Как открыть сайт в браузере
