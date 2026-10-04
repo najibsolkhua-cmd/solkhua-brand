@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261004i"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261005a"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -220,10 +220,17 @@
       walk(el); el.classList.add("split");
       $$(".w>span", el).forEach((s, i) => (s.style.transitionDelay = i * 0.06 + "s"));
     });
-    const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-    }), { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-    $$(".reveal,.reveal-img,[data-split]").forEach(el => io.observe(el));
+    const pending = new Set();
+    const show = el => {
+      if (!pending.delete(el)) return;
+      el.classList.add("in"); io.unobserve(el);
+      if (el.classList.contains("split")) setTimeout(() => el.classList.add("settled"), 1300 + $$(".w", el).length * 60);
+    };
+    const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && show(e.target)), { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    $$(".reveal,.reveal-img,[data-split]").forEach(el => { pending.add(el); io.observe(el); });
+    // safety net: anything already scrolled past in one fast jump is shown too
+    const passed = () => pending.forEach(el => { if (el.getBoundingClientRect().top < innerHeight * .92) show(el); });
+    addEventListener("scroll", () => requestAnimationFrame(passed), { passive: true });
     requestAnimationFrame(() => document.documentElement.classList.add("loaded"));
   }
 
