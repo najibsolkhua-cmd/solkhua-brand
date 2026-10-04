@@ -5,12 +5,12 @@
    ========================================================== */
 
 /* ---------- шрифты (файлы в папке /fonts) ---------- */
-@font-face{font-family:"Molodnyak";src:url("../../fonts/Molodnyak.woff2") format("woff2");font-weight:400;font-style:normal;font-display:block}
-@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Oblique.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-BoldOblique.woff2") format("woff2");font-weight:700;font-style:italic;font-display:swap}
-@font-face{font-family:"SK Times";src:url("../../fonts/TimesNewRoman.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Molodnyak";src:url("../../fonts/Molodnyak.woff2?v=2") format("woff2");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Regular.woff2?v=2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Bold.woff2?v=2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-Oblique.woff2?v=2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Evolventa";src:url("../../fonts/Evolventa-BoldOblique.woff2?v=2") format("woff2");font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:"SK Times";src:url("../../fonts/TimesNewRoman.woff2?v=2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 
 :root{
   /* Палитра: светлые спокойные тона, туман и белые ночи */
@@ -168,9 +168,6 @@ section{padding-block:clamp(64px,9vw,140px)}
 .hero-facts{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:8px clamp(18px,3vw,40px);padding-top:18px;border-top:1px solid rgba(43,43,49,.12)}
 .hero-facts b{display:block;font-family:var(--f-display);font-weight:400;font-size:var(--s-2);line-height:1}
 .hero-facts span{font-size:var(--s--1);color:var(--soft)}
-.hero-hint{text-decoration:none;position:absolute;left:50%;bottom:18px;transform:translateX(-50%);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:8px}
-.hero-hint i{width:1px;height:34px;background:linear-gradient(var(--soft),transparent);animation:hint 2s ease-in-out infinite}
-@keyframes hint{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 /* ---------- marquee ---------- */
 .marquee{overflow:hidden;border-block:1px solid var(--line);padding-block:20px;background:var(--white)}
@@ -470,9 +467,17 @@ section{padding-block:clamp(64px,9vw,140px)}
 .sub{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
 .sub input{flex:1 1 200px;min-width:0;padding:.95em 1.2em;border-radius:999px;border:1px solid var(--line);background:var(--milk);font:inherit;color:var(--ink)}
 .sub input:focus{outline:none;border-color:var(--ink)}
-.wordmark{font-family:var(--f-display);font-size:min(15vw,15rem);line-height:.85;letter-spacing:.04em;text-align:center;margin-top:clamp(48px,6vw,90px);color:#E2D9CD;white-space:nowrap;overflow:hidden;user-select:none}
+.wordmark{font-family:var(--f-display);font-size:min(15vw,15rem);line-height:1;padding-block:.06em;letter-spacing:.04em;text-align:center;margin-top:clamp(40px,5vw,80px);color:#E2D9CD;white-space:nowrap;overflow:hidden;user-select:none}
 .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px;font-size:var(--s--1);color:var(--soft)}
 .legal a{text-decoration:none}
+
+/* ---------- scroll hint ---------- */
+.scroll-hint{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:12px;padding:10px 16px 10px 19px;border:1px solid var(--line);border-radius:999px;background:rgba(251,248,244,.92);color:var(--soft);font:inherit;font-size:.68rem;line-height:1;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;opacity:0;visibility:hidden;transform:translate(-50%,10px);transition:opacity .6s var(--ease),transform .6s var(--ease),visibility .6s,color .3s,border-color .3s;-webkit-tap-highlight-color:transparent}
+.scroll-hint.on{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.scroll-hint:hover{color:var(--ink);border-color:var(--ink)}
+.scroll-hint i{position:relative;width:1px;height:18px;background:var(--line);overflow:hidden}
+.scroll-hint i::after{content:"";position:absolute;inset:0;background:var(--ink);transform:translateY(-100%);animation:hintDrop 1.9s var(--ease) infinite}
+@keyframes hintDrop{60%,100%{transform:translateY(100%)}}
 
 /* ---------- toast ---------- */
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:120;display:flex;align-items:center;gap:12px;padding:10px 18px 10px 10px;border-radius:999px;background:var(--ink);color:var(--white);font-size:var(--s--1);letter-spacing:.04em;box-shadow:0 20px 40px -20px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translate(-50%,30px);transition:opacity .4s var(--ease),transform .5s var(--ease)}
@@ -497,7 +502,6 @@ section{padding-block:clamp(64px,9vw,140px)}
   .cat:nth-child(even){margin-top:0}
   .cat:nth-child(3n+2){margin-top:clamp(28px,5vw,60px)}
 }
-@media (max-height:700px){.hero-hint{display:none}}
 @media (max-width:960px){
   :root{--header-h:64px}
   .nav{display:none}
@@ -511,7 +515,6 @@ section{padding-block:clamp(64px,9vw,140px)}
   .city-img::after{display:none}
   .hero-stage{order:-1;max-width:460px}
   .hero-word{top:22%;font-size:30vw}
-  .hero-hint{display:none}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .split-block,.charity-in,.pdp,.checkout,.info-grid{grid-template-columns:1fr}
   .split-block.rev>:first-child{order:0}

@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261004h"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261004i"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -84,6 +84,7 @@
         <div class="drawer-body" id="drawer-body"></div>
         <div class="drawer-foot" id="drawer-foot"></div>
       </aside>
+      <button class="scroll-hint" id="scroll-hint" type="button" aria-label="Листайте вниз" tabindex="-1"><span>Листайте</span><i></i></button>
       <div class="toast" id="toast" role="status" aria-live="polite"></div>
       <div class="curtain" id="curtain"></div>`);
   }
@@ -596,6 +597,36 @@
     addEventListener("scroll", () => requestAnimationFrame(go), { passive: true }); go();
   }
 
+  /* ---------- "scroll" hint: on the first screen of every long page and inside the pinned story ---------- */
+  function scrollHint() {
+    const hint = $("#scroll-hint"), track = $("#story-track");
+    const steps = track ? $$(".step", track).length : 0;
+    let ready = false;
+    const story = () => {
+      if (!track) return null;
+      const r = track.getBoundingClientRect(), total = r.height - innerHeight;
+      if (r.top > 1 || r.bottom < innerHeight + 1 || total <= 0) return null;
+      return { top: scrollY + r.top, total, i: Math.floor(Math.min(-r.top / total, .9999) * steps) };
+    };
+    const busy = () => $("#drawer").classList.contains("open") || $("#menu").classList.contains("open") || $("#toast").classList.contains("show");
+    const go = () => {
+      const s = story(), main = $("#main");
+      const more = main && main.getBoundingClientRect().bottom > innerHeight + 120;
+      const show = ready && !busy() && (s ? s.i < steps - 1 : more && scrollY < 40);
+      hint.classList.toggle("on", show);
+    };
+    hint.onclick = () => {
+      const s = story();
+      if (s) scrollTo({ top: s.top + (s.i + 1) * s.total / steps + 4, behavior: "smooth" });
+      else scrollBy({ top: Math.round(innerHeight * .8), behavior: "smooth" });
+    };
+    addEventListener("scroll", () => requestAnimationFrame(go), { passive: true });
+    addEventListener("resize", go);
+    const mo = new MutationObserver(go);
+    ["#drawer", "#menu", "#toast"].forEach(q => mo.observe($(q), { attributes: true, attributeFilter: ["class"] }));
+    setTimeout(() => { ready = true; go(); }, 1400);
+  }
+
   /* ---------- boot ---------- */
   document.documentElement.dataset.hover = CFG.cardHover || "wipe";
   layout();
@@ -605,4 +636,5 @@
   (pages[page] || (() => {}))();
   animations();
   parallax();
+  scrollHint();
 })();
