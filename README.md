@@ -30,7 +30,11 @@
   - `assets/img/product-<id>.webp` — свеча на фоне #EFE9E2 (главная, каталог, карточка товара, корзина).
     Фон сайта (`--milk` в `style.css`) совпадает с фоном этих фото, поэтому свечи выглядят как без фона.
     Новые фото выравнивайте под #EFE9E2 или присылайте мне.
-  - `assets/img/label-<id>.jpg` — этикетка; `assets/img/lit-apelsin.webp` — горящая свеча.
+  - `assets/img/closed-<id>.webp` — банка без упаковки, крышка закрыта (галерея, наведение в каталоге).
+  - `assets/img/open-<id>.webp` — открытая банка, крышка рядом (галерея, блок «Откройте» на главной).
+  - `assets/img/label-<id>.webp` — наклейка; исходники PNG лежат в `gemini-kit/labels/`.
+  - `assets/img/lit-apelsin.webp` — горящая свеча.
+  Наклейки на всех фото наложены из PNG-исходников с учётом перспективы, поэтому текст везде точный.
 - **Фото Петербурга и котов** — Unsplash (бесплатная лицензия Unsplash, указание авторов желательно):
   - `assets/img/spb/bridge.webp` — Ilia Bronskiy, https://unsplash.com (photo-1642021824052-920192524b19)
   - `assets/img/spb/isaac-flowers.webp` — Ilia Bronskiy, https://unsplash.com (photo-1642258483742-a4495842847b)

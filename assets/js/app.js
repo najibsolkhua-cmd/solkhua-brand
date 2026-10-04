@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const img = (id, kind = "product") => (kind === "product" ? `assets/img/product-${id}.webp` : `assets/img/${kind}-${id}.jpg`);
+  const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   /* ---------- storage (safe) ---------- */
@@ -233,6 +233,7 @@
           <a class="card-media" href="product.html?id=${p.id}" data-vt aria-label="${esc(p.name)}">
             ${p.badge ? `<span class="card-badge">${p.badge}</span>` : ""}
             <img class="main" src="${img(p.id)}" alt="Свеча ${esc(p.name)} в вакуумной упаковке" loading="lazy" width="1400" height="1400">
+            <img class="alt" src="${img(p.id, "closed")}" alt="" loading="lazy" width="1400" height="1400">
           </a>
           <button class="card-quick" type="button" data-add="${p.id}">В корзину · ${money(p.price)}</button>
         </div>
@@ -282,7 +283,7 @@
       const id = new URLSearchParams(location.search).get("id");
       const p = byId[id] || PRODUCTS[0];
       document.title = `${p.name} — SOLKHUA`;
-      const shots = [img(p.id), img(p.id, "label")];
+      const shots = [img(p.id), img(p.id, "closed"), img(p.id, "open"), img(p.id, "label")];
       if (p.id === "apelsin-koritsa") shots.push("assets/img/lit-apelsin.webp");
       let qty = 1;
       $("#pdp").innerHTML = `
