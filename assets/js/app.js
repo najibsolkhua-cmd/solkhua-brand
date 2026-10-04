@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261004f"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261004g"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
