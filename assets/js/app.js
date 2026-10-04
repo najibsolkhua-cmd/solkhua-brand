@@ -283,8 +283,7 @@
       const id = new URLSearchParams(location.search).get("id");
       const p = byId[id] || PRODUCTS[0];
       document.title = `${p.name} — SOLKHUA`;
-      const shots = [img(p.id), img(p.id, "closed"), img(p.id, "open"), img(p.id, "label")];
-      if (p.id === "apelsin-koritsa") shots.push("assets/img/lit-apelsin.webp");
+      const shots = [img(p.id), img(p.id, "closed"), img(p.id, "open"), "assets/img/side.webp", "assets/img/lit.webp", img(p.id, "label")];
       let qty = 1;
       $("#pdp").innerHTML = `
         <div class="gallery">
