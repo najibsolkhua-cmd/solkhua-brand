@@ -24,6 +24,8 @@ window.SOLKHUA_CONFIG = {
     { id: "pickup", name: "Самовывоз в Петербурге", price: 0, eta: "по договорённости" }
   ],
   freeShippingFrom: 4000,
+  // Эффект при наведении на свечу в каталоге: "wipe" (мягкая шторка снизу вверх) или "circle" (круг от курсора)
+  cardHover: "wipe",
   // Видео распаковки для блока на главной. Положите файл в assets/video и впишите путь,
   // например "assets/video/unboxing.mp4". Пусто — показываются фотографии.
   unboxingVideo: "",

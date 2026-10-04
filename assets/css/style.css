@@ -185,12 +185,18 @@ section{padding-block:clamp(64px,9vw,140px)}
 .card-visual{position:relative}
 .card-media{position:relative;display:block;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--photo)}
 .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-/* hover: the unpacked tin is revealed by a circle growing from the cursor; the packed tin eases back */
-.card-media .main{transition:transform .95s cubic-bezier(.2,.8,.2,1)}
-.card-media .alt{clip-path:circle(0% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .85s cubic-bezier(.2,.8,.2,1),-webkit-clip-path .85s cubic-bezier(.2,.8,.2,1),transform .95s cubic-bezier(.2,.8,.2,1);transform:scale(1.04);will-change:clip-path}
-.card:hover .card-media .main{transform:scale(.96)}
-.card:hover .card-media .alt{clip-path:circle(150% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(150% at var(--x,50%) var(--y,50%));transform:scale(1)}
-.card-media:focus-visible .alt{clip-path:circle(150% at 50% 50%);-webkit-clip-path:circle(150% at 50% 50%)}
+/* ---------- card hover effects (switch in data.js: cardHover = "wipe" | "circle") ---------- */
+/* wipe: the unpacked tin rises into view behind a soft-edged curtain; the packed tin drifts up and back */
+[data-hover="wipe"] .card-media .main{transition:transform .9s cubic-bezier(.4,0,.2,1),opacity .9s cubic-bezier(.4,0,.2,1)}
+[data-hover="wipe"] .card-media .alt{-webkit-mask-image:linear-gradient(to top,#000 42%,transparent 58%);mask-image:linear-gradient(to top,#000 42%,transparent 58%);-webkit-mask-size:100% 260%;mask-size:100% 260%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:0 0;mask-position:0 0;transform:translateY(1.5%);transition:-webkit-mask-position .9s cubic-bezier(.4,0,.2,1),mask-position .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1)}
+[data-hover="wipe"] .card:hover .card-media .main{transform:translateY(-1%) scale(.985);opacity:.9}
+[data-hover="wipe"] .card:hover .card-media .alt,[data-hover="wipe"] .card-media:focus-visible .alt{-webkit-mask-position:0 100%;mask-position:0 100%;transform:none}
+/* circle: the unpacked tin is revealed by a circle growing from the cursor; the packed tin eases back */
+[data-hover="circle"] .card-media .main{transition:transform .95s cubic-bezier(.2,.8,.2,1)}
+[data-hover="circle"] .card-media .alt{clip-path:circle(0% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .85s cubic-bezier(.2,.8,.2,1),-webkit-clip-path .85s cubic-bezier(.2,.8,.2,1),transform .95s cubic-bezier(.2,.8,.2,1);transform:scale(1.04);will-change:clip-path}
+[data-hover="circle"] .card:hover .card-media .main{transform:scale(.96)}
+[data-hover="circle"] .card:hover .card-media .alt{clip-path:circle(150% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(150% at var(--x,50%) var(--y,50%));transform:scale(1)}
+[data-hover="circle"] .card-media:focus-visible .alt{clip-path:circle(150% at 50% 50%);-webkit-clip-path:circle(150% at 50% 50%)}
 .card-badge{position:absolute;z-index:2;top:14px;left:14px;padding:.45em .95em;border-radius:999px;background:rgba(255,255,255,.85);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
 .card-quick{position:absolute;z-index:2;left:14px;right:14px;bottom:14px;display:flex;justify-content:center;padding:.95em;border:0;border-radius:999px;background:var(--white);box-shadow:0 10px 30px -18px rgba(60,45,30,.45);font-size:var(--s--1);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;opacity:0;transform:translateY(10px);transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .35s ease,background .3s}
 .card:hover .card-quick,.card-quick:focus-visible{opacity:1;transform:none}
