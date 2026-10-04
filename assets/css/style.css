@@ -186,8 +186,8 @@ section{padding-block:clamp(64px,9vw,140px)}
 .card-media{position:relative;display:block;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--photo)}
 .card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
 /* hover: the unpacked tin is revealed by a circle growing from the cursor; the packed tin eases back */
-.card-media .main{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-.card-media .alt{clip-path:circle(0% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .6s cubic-bezier(.2,.8,.2,1),-webkit-clip-path .6s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);transform:scale(1.04);will-change:clip-path}
+.card-media .main{transition:transform .95s cubic-bezier(.2,.8,.2,1)}
+.card-media .alt{clip-path:circle(0% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(0% at var(--x,50%) var(--y,50%));transition:clip-path .85s cubic-bezier(.2,.8,.2,1),-webkit-clip-path .85s cubic-bezier(.2,.8,.2,1),transform .95s cubic-bezier(.2,.8,.2,1);transform:scale(1.04);will-change:clip-path}
 .card:hover .card-media .main{transform:scale(.96)}
 .card:hover .card-media .alt{clip-path:circle(150% at var(--x,50%) var(--y,50%));-webkit-clip-path:circle(150% at var(--x,50%) var(--y,50%));transform:scale(1)}
 .card-media:focus-visible .alt{clip-path:circle(150% at 50% 50%);-webkit-clip-path:circle(150% at 50% 50%)}
