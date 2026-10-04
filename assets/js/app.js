@@ -310,7 +310,7 @@
               <dt>Воск</dt><dd>100% кокосовый</dd><dt>Объём</dt><dd>60 мл</dd><dt>Банка</dt><dd>Алюминий, крышка на резьбе</dd><dt>Упаковка</dt><dd>Вакуумная прозрачная плёнка</dd><dt>Аромат</dt><dd>${p.notes.join(", ")}</dd></dl></div></details>
             <details><summary>Кот на этикетке</summary><div class="acc-body"><p>${esc(p.cat)}</p><p>Каждая крышка — портрет петербургского кота с характером и цитата великой женщины.</p></div></details>
             <details><summary>Как зажигать</summary><div class="acc-body"><p>В первый раз дайте свече гореть, пока весь верхний слой воска не станет жидким, обычно 1–2 часа. Так она будет прогорать ровно.</p><p>Перед каждым зажиганием подрезайте фитиль до 5 мм. Не оставляйте горящую свечу без присмотра и держите её подальше от котов, детей и сквозняков.</p></div></details>
-            <details><summary>Доставка и оплата</summary><div class="acc-body"><p>Курьером по Петербургу, СДЭК и Почтой России по всей стране. При заказе от ${money(CFG.freeShippingFrom)} доставка бесплатна.</p><p><a class="link" href="info.html">Подробнее</a></p></div></details>
+            <details><summary>Доставка и оплата</summary><div class="acc-body"><p>СДЭК и Почтой России по всей стране, курьером по Петербургу. При заказе от ${money(CFG.freeShippingFrom)} доставка бесплатна.</p><p><a class="link" href="info.html">Подробнее</a></p></div></details>
           </div>
         </div>`;
       const main = $("#main-img img");
@@ -349,7 +349,7 @@
     const root = $("#hero"); if (!root) return;
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const DUR = 6000;
-    const candle = $("#hero-candle"), panel = $("#hero-panel"), picker = $("#picker");
+    const panel = $("#hero-panel"), picker = $("#picker");
     const preload = () => PRODUCTS.forEach(p => { const i = new Image(); i.src = img(p.id); });
     "requestIdleCallback" in window ? requestIdleCallback(preload) : setTimeout(preload, 1500);
     picker.innerHTML = PRODUCTS.map((p, i) => `
@@ -372,13 +372,18 @@
       $$(".pick", picker).forEach((b, k) => { b.setAttribute("aria-pressed", k === i); b.classList.remove("run"); });
       const active = $$(".pick", picker)[i];
       if (auto) { void active.offsetWidth; active.classList.add("run"); }
-      candle.classList.add("out"); panel.classList.add("fade");
-      setTimeout(() => {
-        candle.src = img(p.id); candle.alt = `Свеча ${p.name}`;
-        candle.classList.remove("out"); candle.classList.add("in-start");
-        fill(p);
-        requestAnimationFrame(() => requestAnimationFrame(() => { candle.classList.remove("in-start"); panel.classList.remove("fade"); }));
-      }, reduce ? 0 : 450);
+      // crossfade: the new candle fades in on top of the old one, so the label never disappears
+      const tilt = $("#hero-tilt"), old = $$(".hero-candle", tilt).pop();
+      const next = old.cloneNode();
+      next.removeAttribute("id"); next.src = img(p.id); next.alt = `Свеча ${p.name}`; next.classList.add("enter");
+      tilt.append(next);
+      panel.classList.add("fade");
+      setTimeout(() => { fill(p); panel.classList.remove("fade"); }, reduce ? 0 : 320);
+      const reveal = () => requestAnimationFrame(() => requestAnimationFrame(() => {
+        next.classList.remove("enter");
+        setTimeout(() => $$(".hero-candle", tilt).slice(0, -1).forEach(el => el.remove()), reduce ? 0 : 850);
+      }));
+      (next.decode ? next.decode() : Promise.resolve()).then(reveal, reveal);
       if (auto) timer = setTimeout(() => show((cur + 1) % PRODUCTS.length), DUR);
     };
     picker.addEventListener("click", e => { const b = e.target.closest(".pick"); if (b) show(+b.dataset.i, true); });

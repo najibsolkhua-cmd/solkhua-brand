@@ -133,9 +133,8 @@ section{padding-block:clamp(64px,9vw,140px)}
 .hero-stage{position:relative;aspect-ratio:1;width:100%;max-width:660px;justify-self:center;perspective:1200px}
 .hero-float{position:absolute;inset:0;animation:float 6s ease-in-out infinite}
 .hero-tilt{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .6s var(--ease)}
-.hero-candle{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);mask-image:radial-gradient(closest-side,#000 78%,transparent 100%);transition:opacity .55s var(--ease),transform .9s var(--ease)}
-.hero-candle.out{opacity:0;transform:scale(.86) rotate(-14deg) translateY(16px)}
-.hero-candle.in-start{opacity:0;transform:scale(.9) rotate(12deg) translateY(-12px)}
+.hero-candle{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .8s var(--ease),transform 1s var(--ease)}
+.hero-candle.enter{opacity:0;transform:scale(.97)}
 @keyframes float{50%{transform:translateY(-14px) rotate(-1.5deg)}}
 @keyframes shadow{50%{transform:scaleX(.86);opacity:.7}}
 .hero-panel{display:flex;flex-direction:column;gap:16px;min-width:0;padding:clamp(18px,2vw,28px);border-radius:var(--r);background:var(--white);border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(80,60,40,.35)}
