@@ -9,7 +9,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = n => n.toLocaleString("ru-RU") + " " + CFG.currency;
-  const V = "20261005a"; // bump after replacing photos so browsers fetch the new files
+  const V = "20261005b"; // bump after replacing photos so browsers fetch the new files
   const img = (id, kind = "product") => `assets/img/${kind}-${id}.webp?v=${V}`;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -112,7 +112,7 @@
     const body = $("#drawer-body"), foot = $("#drawer-foot");
     if (!cart.length) {
       body.innerHTML = `<div class="empty"><img src="${img("lemongrass", "label")}" alt=""><p>В корзине пока пусто.<br>Котики ждут в каталоге.</p><a class="btn light" href="catalog.html">В каталог</a></div>`;
-      foot.hidden = true; return;
+      foot.hidden = true; foot.innerHTML = ""; return;
     }
     foot.hidden = false;
     body.innerHTML = cart.map(l => { const p = byId[l.id]; return `

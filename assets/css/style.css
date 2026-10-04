@@ -53,6 +53,7 @@
 /* ---------- base ---------- */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
 body{margin:0;background:var(--milk);color:var(--ink);font-family:var(--f-body);font-size:var(--s-0);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,video{max-width:100%;display:block}
 a{color:inherit}
